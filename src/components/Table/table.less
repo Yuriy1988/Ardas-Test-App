@@ -1,0 +1,29 @@
+.data-table {
+    width: 900px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    .table_row {
+        height: 40px;
+        background: #f2f2f2;
+        .table_cell-head {
+            color: #333333;
+            border: 1px solid #cccccc;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .table_cell {
+            color: #4c4c4c;
+            text-align: center;
+            border: 1px solid #cccccc;
+        }
+        &:hover:not(.table_row-head) {
+            background: rgba(46, 204, 113, 0.2);
+        }
+        &:not(.table_row-head) {
+            cursor: pointer;
+        }
+    }
+    .table_row-head {
+        background-color: #e5e5e5;
+    }
+}

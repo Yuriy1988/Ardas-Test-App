@@ -1,14 +1,20 @@
 import React from 'react';
 
+import Header from '../Header';
+import Table from '../Table';
+
+import tasks from '../../data/tasks.json';
+
 import './app.less';
 
 class App extends React.Component {
     render () {
         return (
             <div className="app-container">
-                <header className="header">
-                    <img src={require('../../images/logo.png')}/>
-                </header>
+                <Header />
+                <div className="content-wrapper">
+                    <Table data={tasks}/>
+                </div>
             </div>
         );
     }
