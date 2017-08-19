@@ -14,6 +14,7 @@
         .table_cell {
             color: #4c4c4c;
             text-align: center;
+            font-size: 15px;
             border: 1px solid #cccccc;
         }
         &:hover:not(.table_row-head) {
@@ -21,6 +22,25 @@
         }
         &:not(.table_row-head) {
             cursor: pointer;
+        }
+        &.high_priority {
+            font-weight: bold;
+            background: rgba(231, 76, 60, 0.1);
+            .table_cell:first-child {
+                position: relative;
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 5px;
+                    height: 100%;
+                    background: rgba(231, 76, 60, 0.8);
+                }
+            }
+            &:hover {
+                background: rgba(231, 76, 60, 0.2);
+            }
         }
     }
     .table_row-head {

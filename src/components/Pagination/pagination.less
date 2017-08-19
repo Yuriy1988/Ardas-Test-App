@@ -1,0 +1,26 @@
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    height: 40px;
+    border-bottom: 1px dashed #cccccc;
+    .pages {
+        font-size: 15px;
+        color: #727272;
+    }
+    .arrows {
+        display: flex;
+        justify-content: space-between;
+        width: 40px;
+        .fa-chevron-left,
+        .fa-chevron-right {
+            font-size: 18px;
+            color: #727272;
+            cursor: pointer;
+            &:hover {
+                color: #4c4c4c;
+            }
+        }
+    }
+}
