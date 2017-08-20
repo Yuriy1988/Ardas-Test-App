@@ -7,11 +7,13 @@ class Table extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-          tasks: props.data,
-          currentPage: 1,
-          rowsPerPage: 13
-        };
+        // this.state = {
+        //   tasks: props.data,
+        //   currentPage: 1,
+        //   rowsPerPage: 13
+        // };
+
+        console.log('props:: ', this.props.data);
 
         this.handleClick = this.handleClick.bind(this);
     }
@@ -29,6 +31,7 @@ class Table extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
+                    {/* {console.log(this.props.store)} */}
                     { this.generateRows() }
                 </tbody>
             </table>
@@ -36,14 +39,11 @@ class Table extends React.Component {
     }
 
     generateRows () {
-        const { tasks, currentPage, rowsPerPage } = this.state;
+        const { tasks, currentPage, tasksPerPage } = this.props.data;
 
-        const lastRowIndex = currentPage * rowsPerPage;
-        const firstRowIndex = lastRowIndex - rowsPerPage;
+        const lastRowIndex = currentPage * tasksPerPage;
+        const firstRowIndex = lastRowIndex - tasksPerPage;
         const currentTasks = tasks.slice(firstRowIndex, lastRowIndex);
-
-        console.log('lastRowIndex', lastRowIndex, 'firstRowIndex', firstRowIndex, 'currentTasks', currentTasks);
-        console.log(currentPage, rowsPerPage);
 
         const rows = currentTasks.map((task) => {
             let isActive = task.obj_status === 'active',

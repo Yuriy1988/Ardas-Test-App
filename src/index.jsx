@@ -1,24 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Provider } from 'react-redux';
-import createStore from './store';
+// import { Provider } from 'react-redux';
+// import createStore from './store';
+// import { setTasks } from './actions';
 
+import tasks from './data/tasks.json';
 import App from './components/App';
 
 import './styles/common.less';
 
 require('./images/favicon.ico');
 
-const store = createStore();
+// const store = createStore();
+
+// store.dispatch(setTasks(require('./data/tasks.json')), 13);
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('app')
+    // <Provider store={store}>
+        <App data={tasks}/>,
+    // </Provider>,
+    document.getElementById('app')
 );
 
 // ToDo
-// 1. Favicon
 // 2. Assets folder
 
 // https://github.com/IAmStrong/Voting-App/blob/master/server/src/reducer.js
