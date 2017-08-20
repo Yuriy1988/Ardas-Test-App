@@ -5,31 +5,53 @@ import './pagination.less';
 
 class Pagination extends React.Component {
     render () {
+        let data = this.getData();
+
         return (
             <div className="pagination">
                 <span className="pages"> { this.getPageStatus() } </span>
                 <div className="arrows">
-                    {this.props.data.currentPage === 1 ?
+                    {data.isFirstPage ?
                         <i className="fa fa-chevron-left disabled" aria-hidden="true"></i> :
                         <i className="fa fa-chevron-left" onClick={ () => { this.handleClick('left') }} aria-hidden="true"></i>
                     }
-                    
-                    <i className="fa fa-chevron-right" onClick={ () => { this.handleClick('right') }} aria-hidden="true"></i>
+                    {data.isLastPage ?
+                        <i className="fa fa-chevron-right disabled" aria-hidden="true"></i> :
+                        <i className="fa fa-chevron-right" onClick={ () => { this.handleClick('right') }} aria-hidden="true"></i>
+                    }
                 </div>
             </div>
         );
     }
 
-    handleClick (direction) {
+    getData () {
+        let tasks = this.props.data.tasks,
+            filtered = tasks.filter(task => task.obj_status === 'active'),
+            length = filtered.length;
+
         let props = this.props.data,
             page = props.currentPage,
-            pages = Math.ceil(props.tasks.length / props.tasksPerPage),
+            pages = Math.ceil(length / props.tasksPerPage),
+            isFirstPage = page === 1,
+            isLastPage = page === pages;
+
+        return {
+            page: page,
+            pages: pages,
+            isFirstPage: isFirstPage,
+            isLastPage: isLastPage
+        };
+    }
+
+    handleClick (direction) {
+        let data = this.getData(),
+            page = data.page,
             directions = {
                 'left': function () {
                     page === 1 ? page : page--;
                 },
                 'right': function () {
-                    page === pages ? page : page++;
+                    page === data.pages ? page : page++;
                 },
             };
 
@@ -39,13 +61,9 @@ class Pagination extends React.Component {
     }
 
     getPageStatus () {
-        const data = this.props.data;
-        const taskCount = data.tasks.length;
-        const { currentPage, tasksPerPage } = data;
+        let data = this.getData();
 
-        const pegeCount = Math.ceil(taskCount / tasksPerPage);
-
-        return `page ${currentPage} of ${pegeCount}`;
+        return `page ${data.page} of ${data.pages}`;
     }
 }
 

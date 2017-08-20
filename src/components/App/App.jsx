@@ -1,11 +1,9 @@
 import React from 'react';
-// import { connect } from 'react-redux';
 
 import Header from '../Header';
 import Table from '../Table';
 import Pagination from '../Pagination';
-
-// import { splitTasks } from '../../actions';
+import Task from '../Task';
 
 import './app.less';
 
@@ -16,7 +14,9 @@ export default class App extends React.Component {
         this.state = {
             tasks: props.data,
             currentPage: 1,
-            tasksPerPage: 13
+            tasksPerPage: 10,
+            isTaskSelected: false,
+            selectedTask: null
         };
     }
 
@@ -25,10 +25,15 @@ export default class App extends React.Component {
             <div className="app-container">
                 <Header />
                 <div className="content-wrapper">
-                    <div className="table-wrapper">
-                        <Table data={this.state}/>
-                        <Pagination data={this.state} onClick={this.changePage.bind(this)}/>
-                    </div>
+                    {!this.state.isTaskSelected ?
+                        <div className="table-wrapper">
+                            <Table data={this.state} onClick={this.showTask.bind(this)}/>
+                            <Pagination data={this.state} onClick={this.changePage.bind(this)}/>
+                        </div> :
+                        <div className="task-wrapper">
+                            <Task data={this.state} onClick={this.previousPage.bind(this)}/>
+                        </div>
+                    }
                 </div>
             </div>
         );
@@ -39,8 +44,18 @@ export default class App extends React.Component {
             currentPage: page
         });
     }
-}
 
-// export default connect(state => ({
-//     tasks: state.tasks
-// }))(App);
+    showTask (id) {
+        this.setState({
+            isTaskSelected: true,
+            selectedTask: id
+        });
+    }
+
+    previousPage () {
+        this.setState({
+            isTaskSelected: false,
+            selectedTask: null
+        });
+    }
+}

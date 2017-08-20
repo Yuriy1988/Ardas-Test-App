@@ -7,14 +7,6 @@ class Table extends React.Component {
     constructor(props) {
         super(props);
 
-        // this.state = {
-        //   tasks: props.data,
-        //   currentPage: 1,
-        //   rowsPerPage: 13
-        // };
-
-        console.log('props:: ', this.props.data);
-
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -31,7 +23,6 @@ class Table extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* {console.log(this.props.store)} */}
                     { this.generateRows() }
                 </tbody>
             </table>
@@ -41,13 +32,14 @@ class Table extends React.Component {
     generateRows () {
         const { tasks, currentPage, tasksPerPage } = this.props.data;
 
+        const filtered = tasks.filter(task => task.obj_status === 'active');
+
         const lastRowIndex = currentPage * tasksPerPage;
         const firstRowIndex = lastRowIndex - tasksPerPage;
-        const currentTasks = tasks.slice(firstRowIndex, lastRowIndex);
+        const currentTasks = filtered.slice(firstRowIndex, lastRowIndex);
 
         const rows = currentTasks.map((task) => {
-            let isActive = task.obj_status === 'active',
-                isHighPriority = task.is_high_priority,
+            let isHighPriority = task.is_high_priority,
                 generateClassName = () => {
                     return isHighPriority ? 'table_row high_priority' : 'table_row';
                 },
@@ -57,17 +49,15 @@ class Table extends React.Component {
 
                     return date ? moment(date).format(dateFormat) : '-';
                 },
-                row;
-
-            if (isActive) row = (
-                <tr className={ generateClassName() } key={task.id} onClick={() => this.handleClick(task.id)}>
-                    <td className="table_cell">{task.name || '-'}</td>
-                    <td className="table_cell">{task.tags || '-'}</td>
-                    <td className="table_cell">{task.actual_effort || '-'}</td>
-                    <td className="table_cell">{task.estimated_effort || '-'}</td>
-                    <td className="table_cell">{ generateDate() }</td>
-                </tr>
-            );
+                row = (
+                    <tr className={ generateClassName() } key={task.id} onClick={() => this.handleClick(task.id)}>
+                        <td className="table_cell">{task.name || '-'}</td>
+                        <td className="table_cell">{task.tags || '-'}</td>
+                        <td className="table_cell">{task.actual_effort || '-'}</td>
+                        <td className="table_cell">{task.estimated_effort || '-'}</td>
+                        <td className="table_cell">{ generateDate() }</td>
+                    </tr>
+                );
 
             return row;
         });
@@ -76,7 +66,7 @@ class Table extends React.Component {
     }
 
     handleClick (id) {
-        console.log(id);
+        this.props.onClick(id);
     }
 }
 
