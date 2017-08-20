@@ -35,23 +35,10 @@ class Editing extends React.Component {
         document.addEventListener('mousedown', this.pageClick.bind(this));
     }
     
-    pageClick () {
-    //   if (this.mouseIsDownOnCalendar) {
-    //       return;
-    //   }
-    console.log('page click');
-    
-      this.setState({
-        isEditing: false
-    });
-    }
-    
-    mouseDownHandler () {
-        this.mouseIsDownOnCalendar = true;
-    }
-    
-    mouseUpHandler () {
-        this.mouseIsDownOnCalendar = false;
+    pageClick (e) {
+        let editing = e.target.className === 'editing';
+
+        if (!editing) this.setState({ isEditing: false });
     }
 
     handleClick (value) {
