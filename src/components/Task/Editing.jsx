@@ -31,15 +31,15 @@ class Editing extends React.Component {
         e.target.value = temp_value;
     }
 
-    componentDidMount () {
-        document.addEventListener('mousedown', this.pageClick.bind(this));
-    }
+    // componentDidMount () {
+    //     document.addEventListener('mousedown', this.pageClick.bind(this));
+    // }
     
-    pageClick (e) {
-        let editing = e.target.className === 'editing';
+    // pageClick (e) {
+    //     let editing = e.target.className === 'editing';
 
-        if (!editing) this.setState({ isEditing: false });
-    }
+    //     if (!editing) this.setState({ isEditing: false });
+    // }
 
     handleClick (value) {
         this.setState({
