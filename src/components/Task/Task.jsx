@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-// import InlineEdit from 'react-edit-inline';
 
 import Editing from './Editing.jsx';
 import '../../styles/font-awesome/font-awesome.less';
@@ -40,20 +39,21 @@ class Task extends React.Component {
 
         for (let key in task) {
             let generateDate = (date) => {
-                let dateFormat = 'MM/DD/YYYY (hh:mm a)';
+                    let dateFormat = 'MM/DD/YYYY (hh:mm a)';
 
-                return moment(date).format(dateFormat);
-            };
+                    return moment(date).format(dateFormat).toString();
+                },
+                formattedDate;
 
             if (key === 'creation_date' ||
                 key === 'due_date' ||
                 key === 'start_date') {
-                    task[key] = generateDate(task[key]);
+                    formattedDate = generateDate(task[key]);
                 }
 
             let tpl = <tr className="table_row" key={count}>
                 <td className="table_cell">{key}</td>
-                <td className="table_cell">{String(task[key])}</td>
+                <td className="table_cell">{formattedDate ? formattedDate : task[key]}</td>
             </tr>;
 
             ++count;

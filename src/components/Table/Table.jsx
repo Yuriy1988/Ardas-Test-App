@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import Moment from 'react-moment';
 
 import './table.less';
 
@@ -47,7 +47,7 @@ class Table extends React.Component {
                     let date = task.due_date,
                         dateFormat = 'MM/DD/YYYY (hh:mm a)';
 
-                    return date ? moment(date).format(dateFormat) : '-';
+                    return date ? <Moment format={dateFormat}>{date}</Moment> : '-';
                 },
                 row = (
                     <tr className={ generateClassName() } key={task.id} onClick={() => this.handleClick(task.id)}>
