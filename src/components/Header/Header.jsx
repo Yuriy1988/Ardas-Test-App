@@ -1,15 +1,17 @@
 import React from 'react';
-
 import './header.less';
+import logo from '../../assets/images/logo.png';
 
-class Header extends React.Component {
-    render () {
-        return (
-            <header className="header">
-                <img src={require('../../images/logo.png')}/>
-            </header>
-        );
-    }
+// лучше не юзать require прям в компоненте
+// не используй классы, там где они не нужны, можно просто функцию в этом случае
+
+const Header = () => {
+  return (
+    <header className="header">
+      <img src={logo} />
+    </header>
+  );
 }
 
 export default Header;
+
