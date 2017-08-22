@@ -53,7 +53,7 @@ class Task extends React.Component {
 
             let tpl = <tr className="table_row" key={count}>
                 <td className="table_cell">{key}</td>
-                <td className="table_cell">{formattedDate ? formattedDate : task[key]}</td>
+                <td className="table_cell">{formattedDate ? formattedDate : String(task[key])}</td>
             </tr>;
 
             ++count;
