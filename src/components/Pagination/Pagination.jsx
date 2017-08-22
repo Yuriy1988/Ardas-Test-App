@@ -1,70 +1,72 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-import '../../styles/font-awesome/font-awesome.less';
+import '../../assets/styles/font-awesome/font-awesome.less';
 import './pagination.less';
 
-class Pagination extends React.Component {
-    render () {
-        let data = this.getData();
+// вместо <i></i> в реакте юзают <i />
 
-        return (
-            <div className="pagination">
-                <span className="pages"> { this.getPageStatus() } </span>
-                <div className="arrows">
-                    {data.isFirstPage ?
-                        <i className="fa fa-chevron-left disabled" aria-hidden="true"></i> :
-                        <i className="fa fa-chevron-left" onClick={ () => { this.handleClick('left') }} aria-hidden="true"></i>
-                    }
-                    {data.isLastPage ?
-                        <i className="fa fa-chevron-right disabled" aria-hidden="true"></i> :
-                        <i className="fa fa-chevron-right" onClick={ () => { this.handleClick('right') }} aria-hidden="true"></i>
-                    }
-                </div>
-            </div>
-        );
-    }
+class Pagination extends Component {
+  getData() {
+    // этот метод хороший - так делать правильно :)
+    // не объявляй переменную props, это может ввести в заблуждение
+    // через запятую в реакте не принято объявлять, исплоьзуй let только там где надо
+    const { data } = this.props;
+    const { tasks } = data;
+    const filtered = tasks.filter(task => task.obj_status === 'active');
+    const length = filtered.length;
+    const page = data.currentPage;
+    const pages = Math.ceil(length / data.tasksPerPage);
+    const isFirstPage = page === 1;
+    const isLastPage = page === pages;
 
-    getData () {
-        let tasks = this.props.data.tasks,
-            filtered = tasks.filter(task => task.obj_status === 'active'),
-            length = filtered.length;
+    // тебе не надо писать { page: page }
+    // в es6 можно писать так:
 
-        let props = this.props.data,
-            page = props.currentPage,
-            pages = Math.ceil(length / props.tasksPerPage),
-            isFirstPage = page === 1,
-            isLastPage = page === pages;
+    return {
+      page,
+      pages,
+      isFirstPage,
+      isLastPage,
+    };
+  }
 
-        return {
-            page: page,
-            pages: pages,
-            isFirstPage: isFirstPage,
-            isLastPage: isLastPage
-        };
-    }
+  // лучше не писать так handleClick, напиши две функции будет проще читаться
+  // и я порефакторил метод рендер, тебе не надо два разных <i> посмотри, как можно менять класс интерполируемой строкой
+  // метод getPageStatus - в принципе не нужен, принято прям из данных вытягивать данные в темплейт
 
-    handleClick (direction) {
-        let data = this.getData(),
-            page = data.page,
-            directions = {
-                'left': function () {
-                    page === 1 ? page : page--;
-                },
-                'right': function () {
-                    page === data.pages ? page : page++;
-                },
-            };
+  handlePrevClick = () => {
+    const data = this.getData();
+    const { page, isFirstPage } = data;
+    return !isFirstPage && this.props.onClick(page - 1);
+  };
 
-        directions[direction]();
+  handleNextClick = () => {
+    const data = this.getData();
+    const { page, isLastPage } = data;
+    return !isLastPage && this.props.onClick(page + 1);
+  };
 
-        this.props.onClick(page);
-    }
 
-    getPageStatus () {
-        let data = this.getData();
+  render() {
+    const data = this.getData();
+    const { isFirstPage, isLastPage } = data;
 
-        return `page ${data.page} of ${data.pages}`;
-    }
+    return (
+      <div className="pagination">
+        <span className="pages"> page ${data.page} of ${data.pages} </span>
+        <div className="arrows">
+          <i
+            className={`fa fa-chevron-left ${isFirstPage && 'disabled'}`}
+            onClick={this.handlePrevClick}
+          />
+          <i
+            className={`fa fa-chevron-right ${isLastPage && 'disabled'}`}
+            onClick={this.handleNextClick}
+          />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default Pagination;

@@ -1,73 +1,43 @@
 import React from 'react';
 
 class Editing extends React.Component {
-    constructor (props) {
-        super(props);
+  // state можно так объявлять, без конструктора
+  state = {
+    isEditing: false,
+    text: this.props.task.name,
+  };
+  // сразу записали в стейт текст имя выбранной таски
 
-        this.state = {
-            isEditing: false,
-            text: ''
-        };
+  handleClick = () => this.setState({ isEditing: true });
 
-        this.setWrapperRef = this.setWrapperRef.bind(this);           
-        this.pageClick = this.pageClick.bind(this);
-    }
+  handleChange = e => this.setState({ text: e.target.value  });
 
-    render () {
-        return (
-            <th className="table_cell-head" colSpan="2">
-                {this.state.isEditing ?
-                    <input className="editing" value={this.state.text} onChange={this.handleChange.bind(this)} onFocus={this.moveCaretAtEnd} autoFocus/> :
-                    <span className="title" 
-                        onClick={() => {this.handleClick(this.state.text ? this.state.text : this.props.task.name)}}>
-                        {this.state.text ? this.state.text : this.props.task.name}
-                    </span>}
-                <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-            </th>
-        );
-    }
+  updateTask = () => {
+    const { id } = this.props.task;
+    this.props.updateTask(id, this.state.text);
+    this.setState({ isEditing: false });
+  };
 
-    moveCaretAtEnd (e) {
-        let temp_value = e.target.value;
-
-        e.target.value = '';
-
-        e.target.value = temp_value;
-    }
-
-    componentDidMount () {
-        document.addEventListener('click', this.pageClick);
-    }
-
-    componentWillUnmount () {
-        document.removeEventListener('click', this.pageClick);
-    }
-
-    pageClick (e) {
-        let editing = e.target.className === 'editing',
-            title = e.target.className === 'title';
-
-        if (!editing && !title && this.state.isEditing) this.setState({ isEditing: false });
-    }
-
-    setWrapperRef(node) {
-        this.wrapperRef = node;
-    }
-
-    handleClick (value) {
-        this.setState({
-            isEditing: true,
-            text: value
-        });
-    }
-
-    handleChange (e) {
-        console.log('change', e.target.value);
-        this.setState({
-            isEditing: true,
-            text: e.target.value
-        });
-    }
+  render() {
+    return (
+      <th className="table_cell-head" colSpan="2">
+        {this.state.isEditing
+          ? <input
+            className="editing"
+            value={this.state.text}
+            onChange={this.handleChange}
+            onBlur={this.updateTask}
+            autoFocus
+          />
+          : <span
+            className="title"
+            onClick={this.handleClick}
+          >{this.props.task.name}</span>
+        }
+        <i className="fa fa-pencil-square-o" />
+      </th>
+    );
+  }
 }
 
 export default Editing;
