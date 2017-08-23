@@ -7,7 +7,7 @@ const config = {
     app: [
       'webpack-dev-server/client?http://localhost:8080',
       'webpack/hot/only-dev-server',
-      './src/index.jsx',
+      './src/index.js',
     ],
   },
   output: {
@@ -25,7 +25,7 @@ const config = {
       use: [{
         loader: 'react-hot-loader',
       }, {
-        loader: 'babel-loader', //натсройки бейбла лучше хранить в отдельном файле babelrc
+        loader: 'babel-loader',
       }],
     }, {
       test: /\.(js|jsx)$/,  // добавил линтер
@@ -33,6 +33,7 @@ const config = {
       loader: 'eslint-loader',
       options: {
         emitWarning: true,
+        configFile: path.join(__dirname, '.eslintrc.js'),
       },
     }, {
       test: /\.less$/,
@@ -61,6 +62,7 @@ const config = {
   devServer: {
     contentBase: './dist',
     hot: true,
+    historyApiFallback: true,
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

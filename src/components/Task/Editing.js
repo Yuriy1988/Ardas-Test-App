@@ -1,20 +1,32 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Editing extends React.Component {
-  // state можно так объявлять, без конструктора
+  static propTypes = {
+    task: PropTypes.shape({
+      name: PropTypes.string,
+    }).isRequired,
+    updateTask: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    task: {},
+    updateTask() {},
+  };
+
   state = {
     isEditing: false,
     text: this.props.task.name,
   };
-  // сразу записали в стейт текст имя выбранной таски
 
   handleClick = () => this.setState({ isEditing: true });
 
-  handleChange = e => this.setState({ text: e.target.value  });
+  handleChange = e => this.setState({ text: e.target.value });
 
   updateTask = () => {
-    const { id } = this.props.task;
-    this.props.updateTask(id, this.state.text);
+    const { task: { id }, updateTask } = this.props;
+
+    updateTask({ id, name: this.state.text });
     this.setState({ isEditing: false });
   };
 
